@@ -26,5 +26,9 @@
     echo "after setup google client";
     echo "<a href='".$client->createAuthUrl()."'>Google Login</a>";
 
+    $class = get_class($client);
+
+    echo $class;
+
     ?>
 @endsection

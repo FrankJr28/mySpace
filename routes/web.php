@@ -15,10 +15,11 @@ use Illuminate\Http\Request;
 */
 
 Route::get('/', LoginController::class);
-/*Route::get('hello', function () {
-    return 'Hello World';
-});*/
+
 Route::get('hello', [LoginController::class, 'hello']);
+
+Route::get('/google_credentials', [LoginController::class, 'google']);
+
 /*Route::get('google_credentials/{uri}', [LoginController::class, 'google']);*/
 
 /*Route::match(['get', 'post'], '/google_credentials', function (Request $request) {
@@ -30,7 +31,7 @@ Route::get('hello', [LoginController::class, 'hello']);
     $prompt = $request->query('prompt');
 });*/
 
-Route::get('/google_credentials', function (Request $request) {
+/*Route::get('/google_credentials', function (Request $request) {
     // Retrieve query string parameters
     
     /*$code = $request->query()['code'];
@@ -39,8 +40,8 @@ Route::get('/google_credentials', function (Request $request) {
     $hd = $request->query()['hd'];
     $prompt = $request->query()['prompt'];*/
     //var_dump($request);
-    echo "<br/>hola credentials";
-    echo "<br/>code: ".$request->query('code');
+    /*echo "<br/>hola credentials";
+    echo "<br/>code: ".$request->query('code');*/
     //echo "code is: ".$code." scope: ".$scope." authuser: ".$authuser." hd: ".$hd." prompt: ".$prompt;
     
     //var_dump($request->query()["code"]);
@@ -51,7 +52,7 @@ Route::get('/google_credentials', function (Request $request) {
 
     // Do something with the parameters
     // For example, return a response or redirect
-});
+//});
 
 //Route::get('google_credentials', [LoginController::class, 'google']);
 /***********************************************************/
