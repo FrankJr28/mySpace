@@ -9,14 +9,14 @@
     <title>@yield('title')</title>
 </head>
 <body>
-    <header class="d-flex justify-content-center align-items-center">
-        <h3 class="text-dark">MySpacer</h3>
+    <header class="d-flex justify-content-center align-items-center border-bottom border border-secondary border-2">
+        <h3>MySpace</h3>
     </header>
     <div class="displayedView p-1">
         @yield('content')   
     </div>
-    <footer class="d-flex justify-content-center align-items-center text-dark">
-        <p>MySpace @<?=date('Y');?></p>
+    <footer class="d-flex justify-content-center align-items-center text-dark border-top border border-secondary border-2">
+        <p class="text-light">MySpace @<?=date('Y');?></p>
     </footer>
 </body>
 </html>
@@ -24,22 +24,26 @@
 <style>
     h3{
         margin: 0;
+        color:azure;
     }
     body{
         min-height: 100vh;
         margin: 0;
         display: flex;
         flex-direction: column;
+        background-color: #f6f6f6;
     }
     header{
-        background-color: #e5e5f7;
-        background: repeating-linear-gradient( 45deg, #5fa472, #5fa472 5px, #e5e5f7 5px, #e5e5f7 25px );
+        /*background-color: #e5e5f7;
+        background: repeating-linear-gradient( 45deg, #5fa472, #5fa472 5px, #e5e5f7 5px, #e5e5f7 25px );*/
+        background-color: #56647a;
         height: 50px;
     }
     footer{
         margin-top: auto;
-        background-color: #e5e5f7;
-        background: repeating-linear-gradient( -45deg, #5fa472, #5fa472 5px, #e5e5f7 5px, #e5e5f7 25px );
+        /*background-color: #e5e5f7;
+        background: repeating-linear-gradient( -45deg, #5fa472, #5fa472 5px, #e5e5f7 5px, #e5e5f7 25px );*/
+        background-color: #56647a;
         height: 50px;
     }
 </style>

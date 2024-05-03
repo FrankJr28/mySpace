@@ -3,7 +3,6 @@
 @section('title', 'Login')
 
 @section('content')
-    <h2>You are in login</h2>
     <?php
     //$appId = env('CLIENT_ID');
     //echo "The app id is: ".$appId;
@@ -21,14 +20,26 @@
     $client->setRedirectUri($redirectUri);
     $client->addScope("email");
     $client->addScope("profile");
+    $client->setAccessType("offline");
+    $client->setApprovalPrompt("force"); 
  
     
-    echo "after setup google client";
-    echo "<a href='".$client->createAuthUrl()."'>Google Login</a>";
-
-    $class = get_class($client);
-
-    echo $class;
-
+    //echo "after setup google client";
     ?>
+    <div class="container rounded bg-white" style="border-radius: 20px !important;">
+        <div class="row mt-3">
+            <div class="col-sm-0 col-md-7">
+                <img src="img/files.jpg" class="w-100" alt="">
+            </div>
+            <div class="col-sm-12 col-md-5 d-flex justify-content-center flex-column">
+                <p>Welcome!</p>
+                <p>This applications allows you see more of your drive</p>
+                <a href="<?= $client->createAuthUrl() ?>" class="btn btn-primary w-100" style="height: min-content">
+                    <i class="fa-brands fa-google"></i>
+                    Login with google
+                </a> 
+            </div>
+        </div>
+    </div>
+    
 @endsection

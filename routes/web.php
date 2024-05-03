@@ -2,9 +2,13 @@
 
 //require_once 'google-api-php-client/autoload.php';
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
+use App\Http\Middleware\CheckEmail;
 use Illuminate\Http\Request;
+use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -21,6 +25,10 @@ Route::get('/', LoginController::class);
 Route::get('hello', [LoginController::class, 'hello']);
 
 Route::get('/google_credentials', [LoginController::class, 'google']);
+
+Route::post('/create_user', [LoginController::class, 'create'])->name('user.create');
+
+Route::get('/dashboard',[DashboardController::class, 'dashboard'])->middleware('email');
 
 /*Route::get('google_credentials/{uri}', [LoginController::class, 'google']);*/
 

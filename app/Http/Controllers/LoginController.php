@@ -1,6 +1,7 @@
 <?php 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Google\Service\Oauth2;
 use Illuminate\Http\Request;
 //use google\Client;
@@ -16,46 +17,52 @@ class LoginController extends Controller
         return view('login');
     }
 
+    public function create(Request $request){
+        
+        $user = new User();
+        $user->name = $request->name;
+        $user->lastname = $request->lastname;
+        $user->email = $request->email;
+        session_start();
+        $user->refresh_token = $_SESSION["refresh_token"];
+        $user->ip=$_SERVER['REMOTE_ADDR'];
+        $user->save();
+        echo "saved";
+    
+    }
+
     public function google(Request $request){
-        echo "google";
-        $code=$request->query('code');
-        echo "The code is: ".$request->query('code');
-        $client= $this->gClient();
-        $token = $client->fetchAccessTokenWithAuthCode($code);
-        echo "<br/><br/>";
-        /*var_dump($token);
-        echo "Clases disponibles en este contexto:\n";
-        $clases_definidas = get_declared_classes();
-        foreach ($clases_definidas as $clase) {
-            echo "<br/><br/>".$clase;
-        }
-        die();*/
-        if(!isset($token['error'])){
-            /*echo "<br/> is not set";
-            $directorio_actual = getcwd();
-            echo "El directorio actual es: $directorio_actual";*/
-            $client->setAccessToken($token['access_token']);
-            $g = new Oauth2($client);
-            $data = $g->userinfo->get();
-            echo "The info of the user is: ";
-            var_dump($data);
-            echo "Email is: ".$data["email"]."<br/>";
-            echo "Name is: ".$data["givenName"]."<br>";
-            echo "Lastname is: ".$data["familyName"]."<br/>";
+        if($request->query('code')){
+            $code=$request->query('code');
+            $client= $this->gClient();
+            $token = $client->fetchAccessTokenWithAuthCode($code);
+            if(!isset($token['error'])){
+                session_start();
+                $_SESSION["access_token"]=$token["access_token"];
+                $_SESSION["refresh_token"]=$token["refresh_token"];
+                $client->setAccessToken($token['access_token']);
+                $g = new Oauth2($client);
+                $data = $g->userinfo->get();
 
-            //$g = new  google\Google_Service_Oauth2($client);
-            //$google_service = new Google_Service_Oauth2($client);
-            //$google_service = new google\Auth\OAuth2($client);
-            //$google_service = new google\Auth\OAuth2();//05---------------->Access Token     06<---------------Protected Resource
-            //$data = $google_service->userinfo->get();
-            
+                $user = new User();
+                $exists=$user->where('email', $data["email"])->first();
+                if($exists){
+                    //update lastlogin
+                    return redirect('/dashboard');
+                    
+                }
+                else{
+                    return view('loginForm')->with('data', $data);
+                }
+                
+            }
+            else{
+                return view('login'); 
+            }
         }
-
-        //$class = get_class($client);
-        //echo "<br/>the class is". $class;
-        //compact($uri);
-        /*echo "here is google";
-        var_dump($request);*/
+        else{
+            return view('login'); 
+        }
     }
 
     public function hello(){
@@ -75,6 +82,8 @@ class LoginController extends Controller
         $client->setRedirectUri($redirectUri);
         $client->addScope("email");
         $client->addScope("profile");
+        $client->setAccessType("offline");
+        $client->setApprovalPrompt("force"); 
         return $client;
     }
 
