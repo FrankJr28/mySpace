@@ -16,8 +16,6 @@ class CheckEmail
      */
     public function handle(Request $request, Closure $next)
     {
-        //echo "at md";
-        //die();
         session_start();
         if (!isset($_SESSION))
             return redirect("/");

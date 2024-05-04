@@ -5,7 +5,11 @@ use App\Models\User;
 use Google\Service\Oauth2;
 use Illuminate\Http\Request;
 //use google\Client;
+//Google\Service\Drive
+use Google\Service\Drive;
 use Google_Client;
+//use App\Providers\MyGoogleClient;
+//use Google\Service\Appsactivity;
 
 //use Google; 
 //use Google\Auth\OAuth2;
@@ -14,7 +18,28 @@ class LoginController extends Controller
 {
     //
     public function __invoke(){
-        return view('login');
+        /*
+        $dependencyObject = app('dependencyObject');
+        return view('your.view', ['dependencyObject' => $dependencyObject]);
+        */
+        
+        $clientID = env('CLIENT_ID');
+        $clientSecret = env('CLIENT_SECRET');
+        $redirectUri = 'http://localhost:8000/google_credentials';
+        
+        // create Client Request to access Google API 
+        //$client = new Google_Client();
+        $client = app('MyGoogleClient');
+        $client->setClientId($clientID);
+        $client->setClientSecret($clientSecret);
+        $client->setRedirectUri($redirectUri);
+        //Google\Service\Drive;
+        $client->addScope(Drive::DRIVE_METADATA_READONLY);
+        $client->addScope("email");
+        $client->addScope("profile");
+        $client->setAccessType("offline");
+        $client->setApprovalPrompt("force"); 
+        return view('login', ['client' => $client]);
     }
 
     public function create(Request $request){
@@ -73,13 +98,12 @@ class LoginController extends Controller
         $clientID = env('CLIENT_ID');
         $clientSecret = env('CLIENT_SECRET');
         $redirectUri = 'http://localhost:8000/google_credentials';
-        
-        // create Client Request to access Google API 
-
-        $client = new Google_Client();
+        //$dependencyObject = app('dependencyObject');
+        $client = app('MyGoogleClient');
         $client->setClientId($clientID);
         $client->setClientSecret($clientSecret);
         $client->setRedirectUri($redirectUri);
+        $client->addScope(Drive::DRIVE_METADATA_READONLY);
         $client->addScope("email");
         $client->addScope("profile");
         $client->setAccessType("offline");
