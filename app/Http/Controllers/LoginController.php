@@ -104,6 +104,9 @@ class LoginController extends Controller
         $client->setClientSecret($clientSecret);
         $client->setRedirectUri($redirectUri);
         $client->addScope(Drive::DRIVE_METADATA_READONLY);
+        $client->addScope('https://www.googleapis.com/auth/drive.activity');
+        //https://www.googleapis.com/auth/drive.activity.readonly
+        $client->addScope('https://www.googleapis.com/auth/drive.activity.readonly');
         $client->addScope("email");
         $client->addScope("profile");
         $client->setAccessType("offline");
